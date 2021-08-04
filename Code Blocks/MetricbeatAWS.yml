@@ -1,0 +1,34 @@
+---
+- name: Install Metricbeat on WebVMs
+  hosts: webservers
+  become: true
+  tasks:
+
+   - name: Download Metricbeat RPM package
+     command: curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.6.1-x86_64.rpm
+
+   - name: Install Metricbeat RPM package
+     command: sudo rpm -vi --force metricbeat-7.6.1-x86_64.rpm
+
+   - name: Enable Metricbeat Docker Modules
+     command: metricbeat modules enable docker
+
+   - name: copy Metricbeat config
+     copy:
+       src: /etc/ansible/metricbeat-config.yml
+       dest: /etc/metricbeat/metricbeat.yml
+       owner: root
+       group: root
+       mode: '0644'
+
+   - name: Setup Metricbeat
+     command: metricbeat setup
+
+   - name: Start Metricbeat
+     command: service metricbeat start
+
+   - name: Enable Metricbeat on Start
+     systemd:
+       name: metricbeat
+       enabled: yes
+       

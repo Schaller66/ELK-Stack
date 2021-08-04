@@ -1,0 +1,51 @@
+---
+ - name: Install Required Components
+   hosts: elk
+   become: true
+   tasks:
+
+    - name: set max map count to 262144 with sysctl
+      sysctl:
+       name: vm.max_map_count
+       value: "262144"
+       state: present
+       reload: yes
+
+    - name: install Docker
+      command: amazon-linux-extras install -y docker
+
+    - name: install Python3 pip
+      yum:
+       name: python3-pip
+       state: latest
+       update_cache: yes
+
+    - name: install six
+      pip:
+        name: six
+        state: present
+
+    - name: start docker
+      command: service docker start
+
+    - name: install Python pip docker extension
+      pip:
+        name: docker
+        state: present
+
+    - name: install docker container for elk
+      docker_container:
+        name: sebp
+        image: sebp/elk:761
+        state: started
+        published_ports:
+          - 5601:5601
+          - 9200:9200
+          - 5044:5044
+        restart_policy: always
+        ulimits: nofile:65536:65536
+
+    - name: Start docker on boot
+      systemd:
+         name: docker
+         enabled: yes

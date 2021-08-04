@@ -1,0 +1,34 @@
+---
+ - name: Install Filebeat on WebVMs
+   hosts: webservers
+   become: true
+   tasks:
+
+     - name: Download Filebeat RPM package
+       command: curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.1-x86_64.rpm
+
+     - name: Install Filebeat RPM package
+       command: sudo rpm -vi --force filebeat-7.6.1-x86_64.rpm
+
+     - name: Enable Filebeat System
+       command: filebeat modules enable system
+
+     - name: copy Filebeat config
+       copy:
+         src: /etc/ansible/filebeat-config.yml
+         dest: /etc/filebeat/filebeat.yml
+         owner: root
+         group: root
+         mode: '0644'
+
+     - name: setup Filebeat
+       command: filebeat setup
+
+     - name: Start Filebeat
+       command: service filebeat start
+
+     - name: Start Filebeat on boot
+       systemd:
+         name: filebeat
+         enabled: yes
+
