@@ -2,7 +2,7 @@
 
 The below files and instructions are how to deploy an ELK stack in an AWS setting. A basic diagram below shows the structure it will be based on.
 
-![ELKDiagram](https://user-images.githubusercontent.com/82848972/128159671-f6e0344c-c7e3-4367-88f5-e9fa2684e05d.png)
+*![ELKDiagram](https://user-images.githubusercontent.com/82848972/128159671-f6e0344c-c7e3-4367-88f5-e9fa2684e05d.png)
 
 The files and permissions below are meant to stand up a live ELK deployment on AWS. There will also be a couple code additions to assist in case of debugging issues occur.
 
