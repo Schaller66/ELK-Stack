@@ -8,11 +8,11 @@ The files and permissions below are meant to stand up a live ELK deployment on A
 
 These topics will be discussed in order to deploy the ELK stack.
 
-Markup : * VM's to be depolyed
-         * Topology associated with the VM's
-         * Access Policies for those VM's
-         * ELK Configuration
-         * Running Ansible Playbooks
+Markup : - VM's to be depolyed
+         - Topology associated with the VM's
+         - Access Policies for those VM's
+         - ELK Configuration
+         - Running Ansible Playbooks
 
 With the VM's the need to be deployed, there needs to be some clarification. We will be deploying our ELK machine, Jump box, and 2 web boxes that we will be using for load balancing and our beat programs.
 
@@ -64,14 +64,14 @@ Our first playbook is going to configure our ELK box.
 
 The `ELKplaybookAWS.yml` runs the following tasks and performs cerrtain actions.
 
-Markup : * Changes a `systemctl` file to allow the container to access more memory so that the container doesn't crash.
-         * Installs Docker on the machine
-         * Installs Python3 pip
-         * Installs Six
-         * Starts Docker
-         * Installs pip Docker module
-         * Pulls the docker container while allowing the required ports that need to be listening, it also changes the base ulimit in order to properly change the memory requirement
-         * Start Docker service upon boot
+Markup : - Changes a `systemctl` file to allow the container to access more memory so that the container doesn't crash.
+         - Installs Docker on the machine
+         - Installs Python3 pip
+         - Installs Six
+         - Starts Docker
+         - Installs pip Docker module
+         - Pulls the docker container while allowing the required ports that need to be listening, it also changes the base ulimit in order to properly change the memory requirement
+         - Start Docker service upon boot
 
 After a successful installation, not only should docker be up and running but the container should also be up and running.
 
@@ -82,13 +82,13 @@ Running `docker ps` should yeild a running container, refer to screenshot below 
 
 We have configured our Elk machine to monitor the following machines.
 
-Markup : * Web 1 10.0.1.155
-         * Web 2 10.0.1.241
+Markup : - Web 1 10.0.1.155
+         - Web 2 10.0.1.241
 
 We have installed the following Beats on the machines.
 
-Markup : * Filebeat
-         * Metricbeat
+Markup : - Filebeat
+         - Metricbeat
 
 Filebeat is used to collect and parse logs created by the system logs of common linux based distros.
 
@@ -100,19 +100,19 @@ Before running these playbooks make sure your control node is provisioned. (Cont
 
 Attach to the container node and procced to the following steps:
 
-Markup : * Copy the `ELKplaybookAWS.yml` file (or whatever you would like to clal it) to the ansible container
-         * Open the `hosts` file in the `/etc/ansible` directory add the servers you want to update, in this case we want to add an elk category since we are deploying an Elk playbook
-         * Run the playbook `ELKplaybookAWS.yml`. If all worked correctly, go to your brower and type in your ELK VM's public IP on port 5601. You should see a working kibana page like the one below
+Markup : - Copy the `ELKplaybookAWS.yml` file (or whatever you would like to clal it) to the ansible container
+         - Open the `hosts` file in the `/etc/ansible` directory add the servers you want to update, in this case we want to add an elk category since we are deploying an Elk playbook
+         - Run the playbook `ELKplaybookAWS.yml`. If all worked correctly, go to your brower and type in your ELK VM's public IP on port 5601. You should see a working kibana page like the one below
 
  ![kibanahome](https://user-images.githubusercontent.com/82848972/128301344-1032acb7-6597-42c9-b9d8-998cc7d33089.PNG)
 
- After the ELK machine is running proerly, we need to install Filebeat and Meticbeat on our web servers.
+After the ELK machine is running proerly, we need to install Filebeat and Meticbeat on our web servers.
 
- Markup : * Back in your ansible container, copy the `FilebeatAWS.yml` file to the container.
-          * Edit the `hosts` file to contain the webservers and their IP's
-          * Run the playbook
-          * Go back to kibana and fill out the module status. To find it, Go to kibana> Click Add Log Data > System Logs > `module status` > click `Check Data` . 
-          * If you were successful you should see something like this.
+Markup : - Back in your ansible container, copy the `FilebeatAWS.yml` file to the container.
+         - Edit the `hosts` file to contain the webservers and their IP's
+         - Run the playbook
+         - Go back to kibana and fill out the module status. To find it, Go to kibana> Click Add Log Data > System Logs > `module status` > click `Check Data` . 
+         - If you were successful you should see something like this.
 
 ![filebeat](https://user-images.githubusercontent.com/82848972/128309453-7e5158f3-c8e4-4395-be1a-dfc04058aea1.PNG)
 
